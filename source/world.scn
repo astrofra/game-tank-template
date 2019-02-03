@@ -118,9 +118,9 @@
 						"Model": "Spot",
 						"Shadow": "ShadowMap",
 						"ShadowColor": {
-							"b": 0.0843,
-							"g": 0.0618,
-							"r": 0.0605
+							"b": 0.0001,
+							"g": 0.0001,
+							"r": 0.0001
 						},
 						"ShadowRange": 0.0,
 						"SpecularColor": {
@@ -157,7 +157,7 @@
 						"Position": {
 							"x": -2.2637,
 							"y": 4.2249,
-							"z": -5.3064
+							"z": -5.3063
 						},
 						"Rotation": {
 							"x": 0.5606,

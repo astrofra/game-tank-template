@@ -32,7 +32,7 @@ def setup_game_level(plus=None):
 
 
 def setup_tank(plus=None, scn=None, pos=hg.Vector3(0, 0.75, 0), rot=hg.Vector3()):
-	scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(hg.AxisLockRotX + hg.AxisLockRotZ)
+	# scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(hg.AxisLockRotX + hg.AxisLockRotZ)
 	mass = 10
 	root = scn.GetNode("tank")
 	cannon = scn.GetNode("emiter_cannon", root)
@@ -60,13 +60,15 @@ def setup_tank(plus=None, scn=None, pos=hg.Vector3(0, 0.75, 0), rot=hg.Vector3()
 
 	root = [root, root.GetRigidBody()]
 	root[1].SetAngularDamping(0.95)
+	root[1].SetLinearDamping(0.95)
 	root[1].SetIsSleeping(False)
 
 	return root, cannon, mass
 
-def rotate_tank(tank, angle, mass):
+def apply_tank_forces(tank, angle, thrust, mass):
 	global vel_history
 	tank[1].SetIsSleeping(False)
+	angle = radians(angle)
 
 	# the tank rotation is controlled by applying a torque on the body
 	# the strength of the torque is limited by the inverse angular velocity
@@ -77,11 +79,19 @@ def rotate_tank(tank, angle, mass):
 	vel_sorted = vel_history.copy()
 	vel_sorted.sort()
 	vel = vel_sorted[5]
-	limit_amplitude = 1.0
+	limit_amplitude = 5.0
 	torque_limiter = (limit_amplitude - min(abs(vel), limit_amplitude)) / limit_amplitude
 	torque_limiter = pow(torque_limiter, 2.0)
-	torque_limiter = min(1.0, max(0.0, torque_limiter - 0.05))
-	tank[1].ApplyTorque(hg.Vector3(0, angle * mass * 1000.0 * torque_limiter, 0))
+	# torque_limiter = min(1.0, max(0.0, torque_limiter - 0.05))
+	tank[1].ApplyTorque(hg.Vector3(0, 0, angle * mass * limit_amplitude * torque_limiter))
+
+	# thrust
+	thrust_vector = tank[0].GetTransform().GetWorld().GetRow(1)
+	thrust_vector *= thrust
+	limit_amplitude = 5.0
+	thrust_limiter = (limit_amplitude - min(abs(tank[1].GetLinearVelocity().Len()), limit_amplitude)) / limit_amplitude
+	thrust_limiter = pow(thrust_limiter, 2.0)
+	tank[1].ApplyLinearForce(thrust_vector * mass * thrust_limiter)
 
 
 def spawn_enemy(plus, scn, pos = hg.Vector3(0, 2, 5)):
@@ -205,6 +215,7 @@ def game():
 			enemy_spawn_interval = max_enemy_spawn_interval
 			player_life = max_player_life
 			tank_torque = 0.0
+			tank_thrust = 0.0
 			score = 0
 			play_sound_fx(al, 'game_start')
 			game_state = "TITLE"
@@ -230,7 +241,13 @@ def game():
 
 			tank_torque = max(tank_torque, -180.0)
 			tank_torque = min(tank_torque, 180.0)
-			# print(tank_torque)
+
+			if plus.KeyDown(hg.KeyUp):
+				tank_thrust += hg.time_to_sec_f(dt) * max_torque_speed
+			else:
+				tank_thrust = max(0, tank_thrust - hg.time_to_sec_f(dt) * max_torque_speed)
+
+			tank_thrust = min(tank_thrust, 100.0)
 
 			if plus.KeyPress(hg.KeySpace):
 				if tank_cool_down < 0.0:
@@ -243,7 +260,7 @@ def game():
 					tank_cool_down += 10.0 * hg.time_to_sec_f(dt)
 
 			tank_cool_down -= hg.time_to_sec_f(dt)
-			rotate_tank(tank, tank_torque, tank_mass)
+			apply_tank_forces(tank, tank_torque, tank_thrust, tank_mass)
 
 			# Enemies
 			# spawn_timer += hg.time_to_sec_f(dt)

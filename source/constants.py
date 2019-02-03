@@ -17,6 +17,6 @@ tank_cool_down_duration = 1.5
 
 enemy_mass = 10.0
 
-bullet_velocity = 5.0
+bullet_velocity = 15.0
 
 max_debris = 256
