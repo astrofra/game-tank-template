@@ -22,11 +22,14 @@ def setup_game_level(plus=None):
 
 	# Get the game camera
 	cam = scn.GetNode("game_camera")
+	scn.SetCurrentCamera(cam)
 
 	# Get the play ground
-	ground = plus.AddPhysicPlane(scn)
-	ground[1].SetStaticFriction(0.0)
-	ground[1].SetDynamicFriction(0.0)
+	# scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(hg.AxisLockX + hg.AxisLockY + hg.AxisLockZ)
+	ground = plus.AddPhysicPlane(scn, hg.Matrix4.TranslationMatrix(hg.Vector3(0,0,0)) , 100, 100, 0.0)
+	ground[1].SetType(hg.RigidBodyKinematic)
+	# ground[1].SetStaticFriction(0.0)
+	# ground[1].SetDynamicFriction(0.0)
 
 	return scn, ground
 
@@ -96,7 +99,7 @@ def apply_tank_forces(tank, angle, thrust, mass):
 
 def spawn_enemy(plus, scn, pos = hg.Vector3(0, 2, 5)):
 	scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(0)
-	root = plus.AddPhysicSphere(scn, hg.Matrix4.TranslationMatrix(pos), 0.7, 6, 16, enemy_mass, "assets/materials/green.mat")
+	root = plus.AddPhysicSphere(scn, hg.Matrix4.TranslationMatrix(pos), 0.7, 6, 16, enemy_mass, "assets/materials/orange.mat")
 	root[0].SetName('enemy')
 
 	return root
@@ -107,6 +110,7 @@ def throw_bullet(plus, scn, pos, dir):
 	root = plus.AddPhysicSphere(scn, hg.Matrix4.TranslationMatrix(pos), 0.15, 3, 8, 1.0, "assets/materials/grey.mat")
 	bullet_light = plus.AddLight(scn, hg.Matrix4.TranslationMatrix(hg.Vector3(0, 0, 0)), hg.LightModelPoint, 5.0, False, game_hilite_color, hg.Color.Black)
 	bullet_light.GetTransform().SetParent(root[0])
+	bullet_light.SetName("light_bullet")
 	root[0].SetName('bullet')
 	root[1].ApplyLinearImpulse(dir * bullet_velocity)
 
@@ -157,7 +161,7 @@ def create_explosion(plus, scn, pos, debris_amount=32, debris_radius=0.5):
 	for i in range(debris_amount):
 		debris_size = uniform(0.1, 0.25)
 		debris = plus.AddPhysicCube(scn, hg.Matrix4().TransformationMatrix(pos + rvect(debris_radius), rvect(radians(45))),
-									debris_size, debris_size, debris_size, 0.05, "assets/materials/green.mat")
+									debris_size, debris_size, debris_size, 0.05, "assets/materials/orange.mat")
 		debris[1].ApplyLinearImpulse(rvect(0.25))
 		new_debris_list.append(debris[0])
 
@@ -266,7 +270,7 @@ def game():
 			apply_tank_forces(tank, tank_torque, tank_thrust, tank_mass)
 
 			# Enemies
-			# spawn_timer += hg.time_to_sec_f(dt)
+			spawn_timer += hg.time_to_sec_f(dt)
 			if spawn_timer > enemy_spawn_interval:
 				spawn_timer = 0
 				spawn_pos = hg.Vector3(uniform(-10, 10), 2.5, uniform(5.5, 6.5))
@@ -305,7 +309,11 @@ def game():
 							pos = enemy[0].GetTransform().GetPosition()
 							destroy_enemy(plus, scn, enemy[0])
 							enemy_list.remove(enemy)
-							scn.RemoveNode(col_pair.GetNodeB())
+							bullet_node = col_pair.GetNodeB()
+							light_bullet_node = scn.GetNode("light_bullet", bullet_node)
+							if light_bullet_node is not None:
+								scn.RemoveNode(light_bullet_node)
+							scn.RemoveNode(bullet_node)
 							debris_list.extend(create_explosion(plus, scn, pos))
 
 							score += 10
