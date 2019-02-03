@@ -18,7 +18,7 @@ def setup_game_level(plus=None):
 	while not scn.IsReady():
 		plus.UpdateScene(scn, plus.UpdateClock())
 
-	scn.GetPhysicSystem().SetDebugVisuals(True)
+	scn.GetPhysicSystem().SetDebugVisuals(False)
 
 	# Get the game camera
 	cam = scn.GetNode("game_camera")
@@ -105,6 +105,8 @@ def spawn_enemy(plus, scn, pos = hg.Vector3(0, 2, 5)):
 def throw_bullet(plus, scn, pos, dir):
 	scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(hg.AxisLockY)
 	root = plus.AddPhysicSphere(scn, hg.Matrix4.TranslationMatrix(pos), 0.15, 3, 8, 1.0, "assets/materials/grey.mat")
+	bullet_light = plus.AddLight(scn, hg.Matrix4.TranslationMatrix(hg.Vector3(0, 0, 0)), hg.LightModelPoint, 5.0, False, game_hilite_color, hg.Color.Black)
+	bullet_light.GetTransform().SetParent(root[0])
 	root[0].SetName('bullet')
 	root[1].ApplyLinearImpulse(dir * bullet_velocity)
 
@@ -251,6 +253,7 @@ def game():
 
 			if plus.KeyPress(hg.KeySpace):
 				if tank_cool_down < 0.0:
+					tank_torque = -tank_torque * 0.25
 					dir = cannon.GetTransform().GetWorld().GetRow(0) * -1.0
 					throw_bullet(plus, scn, cannon.GetTransform().GetWorld().GetTranslation() + dir * 0.5, dir)
 					tank_cool_down = tank_cool_down_duration
