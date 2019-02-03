@@ -87,31 +87,31 @@ function FinalizeScene(scene)
 	end
 
 	-- look for a set of collision shapes and turn them to physics component
-	local i
-	local tank_node
-	tank_node = scene:GetNode("tank")
-	local rigid = hg.RigidBody()
-	rigid:SetType(hg.RigidBodyDynamic)
-	tank_node:AddComponent(rigid)
+	-- local i
+	-- local tank_node
+	-- tank_node = scene:GetNode("tank")
+	-- local rigid = hg.RigidBody()
+	-- rigid:SetType(hg.RigidBodyDynamic)
+	-- tank_node:AddComponent(rigid)
 
-	local nodes
-	nodes = scene:GetNodeChildren(tank_node)
+	-- local nodes
+	-- nodes = scene:GetNodeChildren(tank_node)
 
-	for i=0,nodes:size()-1 do
-		local node = nodes:at(i)
-		if node:GetName():lower():starts("tank_colshape_") then
-			print("Found collision shape : " .. node:GetName())
-			local colbox = hg.BoxCollision()
-			local dimensions = node:GetTransform():GetScale()
-			print(dimensions.x .. ', ' .. dimensions.y .. ', ' .. dimensions.z)
-			local pos = node:GetTransform():GetPosition()
-			colbox:SetDimensions(dimensions)
-			colbox:SetMatrix(hg.Matrix4.TranslationMatrix(pos))
-			colbox:SetMass(1.0)
-			tank_node:AddComponent(colbox)
-			node:SetDoNotInstantiate(true)
-		end	
-	end
+	-- for i=0,nodes:size()-1 do
+	-- 	local node = nodes:at(i)
+	-- 	if node:GetName():lower():starts("tank_colshape_") then
+	-- 		print("Found collision shape : " .. node:GetName())
+	-- 		local colbox = hg.BoxCollision()
+	-- 		local dimensions = node:GetTransform():GetScale()
+	-- 		print(dimensions.x .. ', ' .. dimensions.y .. ', ' .. dimensions.z)
+	-- 		local pos = node:GetTransform():GetPosition()
+	-- 		colbox:SetDimensions(dimensions)
+	-- 		colbox:SetMatrix(hg.Matrix4.TranslationMatrix(pos))
+	-- 		colbox:SetMass(5.0)
+	-- 		tank_node:AddComponent(colbox)
+	-- 		node:SetDoNotInstantiate(true)
+	-- 	end	
+	-- end
 
 	scene:UpdateAndCommitWaitAll()
 end

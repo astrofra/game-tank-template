@@ -29,37 +29,6 @@
 					},
 					"Object": {
 						"Geometry": "assets/tank/tank.geo"
-					},
-					"RigidBody": {
-						"Restitution": 0.5
-					},
-					"BoxCollision": {
-						"Collision": {
-							"Matrix": {
-								"m03": -0.0137,
-								"m13": 0.0241,
-								"m23": -0.214
-							}
-						},
-						"Dimensions": {
-							"x": 1.0,
-							"y": 1.5972,
-							"z": 0.4802
-						}
-					},
-					"BoxCollision": {
-						"Collision": {
-							"Matrix": {
-								"m03": -0.0137,
-								"m13": -0.0204,
-								"m23": -0.7922
-							}
-						},
-						"Dimensions": {
-							"x": 0.5068,
-							"y": 1.0,
-							"z": 0.7551
-						}
 					}
 				}
 			},
@@ -119,7 +88,6 @@
 			},
 			"Node": {
 				"Uid": 5,
-				"DoNotInstantiate": true,
 				"Name": "tank_colshape_0",
 				"Components": {
 					"Transform": {
@@ -141,7 +109,6 @@
 			},
 			"Node": {
 				"Uid": 6,
-				"DoNotInstantiate": true,
 				"Name": "tank_colshape_1",
 				"Components": {
 					"Transform": {

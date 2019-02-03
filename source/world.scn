@@ -4,7 +4,7 @@
 			"Environment": {
 				"AmbientColor": {
 					"b": 0.1906,
-					"g": 0.136,
+					"g": 0.1361,
 					"r": 0.1422
 				},
 				"BackgroundColor": {
@@ -47,7 +47,8 @@
 			},
 			"Node": {
 				"Uid": 2,
-				"Name": "Plane",
+				"DoNotInstantiate": true,
+				"Name": "ground",
 				"Components": {
 					"Transform": {},
 					"LogicScript": {
@@ -81,6 +82,16 @@
 							},
 							"Path": "@core/lua/plane.lua"
 						}
+					},
+					"RigidBody": {
+						"Restitution": 0.5
+					},
+					"BoxCollision": {
+						"Dimensions": {
+							"x": 100.0,
+							"y": 0.25,
+							"z": 100.0
+						}
 					}
 				}
 			},
@@ -107,9 +118,9 @@
 						"Model": "Spot",
 						"Shadow": "ShadowMap",
 						"ShadowColor": {
-							"b": 0.0842,
+							"b": 0.0843,
 							"g": 0.0618,
-							"r": 0.0604
+							"r": 0.0605
 						},
 						"ShadowRange": 0.0,
 						"SpecularColor": {
@@ -125,7 +136,13 @@
 				"Uid": 4,
 				"Name": "instance_tank",
 				"Components": {
-					"Transform": {},
+					"Transform": {
+						"Position": {
+							"x": 0.0,
+							"y": 1.0,
+							"z": 0.0
+						}
+					},
 					"Instance": {
 						"Path": "assets/tank/tank.scn"
 					}
@@ -138,19 +155,14 @@
 				"Components": {
 					"Transform": {
 						"Position": {
-							"x": -2.1896,
-							"y": 1.1371,
-							"z": -1.5248
+							"x": -2.2637,
+							"y": 4.2249,
+							"z": -5.3064
 						},
 						"Rotation": {
-							"x": 0.2579,
-							"y": 1.0047,
+							"x": 0.5606,
+							"y": 0.3972,
 							"z": 0.0
-						},
-						"Scale": {
-							"x": 1.0,
-							"y": 1.0,
-							"z": 1.0
 						}
 					},
 					"Camera": {
@@ -179,7 +191,7 @@
 		"Skeletons": {},
 		"State": {
 			"CurrentCamera": {
-				"Uid": 5
+				"Uid": 1
 			}
 		},
 		"Takes": {}
