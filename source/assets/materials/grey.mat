@@ -1,0 +1,17 @@
+{
+	"Material": {
+		"Shader": "@core/surfaces/diffuse_specular.isl",
+		"MaterialValues": {
+			"Value": {
+				"Name": "diffuse_color",
+				"Type": "vec4",
+				"Value": "vec4(0.45, 0.45, 0.45, 1.0000)"
+			},
+			"Value": {
+				"Name": "specular_color",
+				"Type": "vec4",
+				"Value": "vec4(0.75, 0.85, 1.0, 1.0000)"
+			}
+		}
+	}
+}

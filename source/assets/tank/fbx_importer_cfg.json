@@ -1,0 +1,19 @@
+{
+	"fbx_file_path": "d:/projects/games/panzer_planet/git_game-tank-template/source/_prod/tank.FBX",
+	"output_folder": "d:/projects/games/panzer_planet/git_game-tank-template/source/assets/tank",
+	"detect_geometry_instances": true,
+	"scene_policy": 1,
+	"geometry_policy": 1,
+	"material_policy": 1,
+	"texture_policy": 1,
+	"anim_policy": 1,
+	"scale": 1.0,
+	"geometry_scale": 1.0,
+	"fix_geometry_orientation": false,
+	"max_smoothing_angle": 70.0,
+	"recalculate_normals": false,
+	"recalculate_tangents": false,
+	"prefix": "",
+	"use_finalizer_script": true,
+	"finalizer_script": "d:/projects/games/panzer_planet/git_game-tank-template/source/_prod/finalizer.lua"
+}
