@@ -17,7 +17,7 @@ def setup_game_level(plus=None):
 	while not scn.IsReady():
 		plus.UpdateScene(scn, plus.UpdateClock())
 
-	scn.GetPhysicSystem().SetDebugVisuals(True)
+	scn.GetPhysicSystem().SetDebugVisuals(False)
 
 	# Get the game camera
 	cam = scn.GetNode("game_camera")
@@ -29,7 +29,10 @@ def setup_game_level(plus=None):
 	ground[1].SetStaticFriction(0.0)
 	ground[1].SetDynamicFriction(0.0)
 
-	return scn, ground, cam
+	# Get the main light
+	light = scn.GetNode("Light")
+
+	return scn, ground, cam, light
 
 
 def setup_tank(plus=None, scn=None, pos=hg.Vector3(0, 0.75, 0), rot=hg.Vector3()):
@@ -116,7 +119,7 @@ def destroy_enemy(plus, scn, enemy):
 
 def update_game_camera(plus, scn, camera, tank, dt):
 	# camera position
-	camera_distance = hg.Vector3(0, 5, -10) # Offset
+	camera_distance = (tank.GetTransform().GetWorld().GetRow(2) * -10.0) + hg.Vector3(0, 5, 0) # Offset
 	cam_pos = tank.GetTransform().GetPosition()
 	cam_pos += camera_distance
 	cam_dt = (cam_pos - camera.GetTransform().GetPosition()) * hg.time_to_sec_f(dt)
@@ -125,6 +128,19 @@ def update_game_camera(plus, scn, camera, tank, dt):
 	# camera rotation
 	quat = hg.Quaternion.LookAt(tank.GetTransform().GetPosition() - camera.GetTransform().GetPosition())
 	camera.GetTransform().SetRotation(quat.ToEuler())
+
+
+def update_tank_light(plus, scn, light, tank, dt):
+	# camera position
+	light_distance = (tank.GetTransform().GetWorld().GetRow(0) * -2.5) + hg.Vector3(0, 5, 2.5) # Offset
+	cam_pos = tank.GetTransform().GetPosition()
+	cam_pos += light_distance
+	cam_dt = (cam_pos - light.GetTransform().GetPosition()) * hg.time_to_sec_f(dt)
+	light.GetTransform().SetPosition(light.GetTransform().GetPosition() + cam_dt)
+
+	# camera rotation
+	quat = hg.Quaternion.LookAt(tank.GetTransform().GetPosition() - light.GetTransform().GetPosition())
+	light.GetTransform().SetRotation(quat.ToEuler())
 
 
 def render_aim_cursor(plus, scn, angle):
@@ -210,7 +226,7 @@ def game():
 	hg.MountFileDriver(hg.StdFileDriver())
 	keyboard = hg.GetInputSystem().GetDevice("keyboard")
 
-	scn, ground, camera = setup_game_level(plus)
+	scn, ground, camera, light = setup_game_level(plus)
 	tank, cannon, tank_mass = setup_tank(plus, scn)
 
 	game_state = "GAME_INIT"
@@ -240,6 +256,7 @@ def game():
 		# Game
 		elif game_state == "GAME":
 			update_game_camera(plus, scn, camera, tank[0], dt)
+			update_tank_light(plus, scn, light, tank[0], dt)
 			# tank
 			if plus.KeyDown(hg.KeyRight):
 				tank_torque -= hg.time_to_sec_f(dt) * max_torque_speed
