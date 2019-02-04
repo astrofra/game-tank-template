@@ -29,7 +29,7 @@ def setup_game_level(plus=None):
 	ground[1].SetStaticFriction(0.0)
 	ground[1].SetDynamicFriction(0.0)
 
-	return scn, ground
+	return scn, ground, cam
 
 
 def setup_tank(plus=None, scn=None, pos=hg.Vector3(0, 0.75, 0), rot=hg.Vector3()):
@@ -112,6 +112,19 @@ def throw_bullet(plus, scn, pos, dir):
 
 def destroy_enemy(plus, scn, enemy):
 	scn.RemoveNode(enemy)
+
+
+def update_game_camera(plus, scn, camera, tank, dt):
+	# camera position
+	camera_distance = hg.Vector3(0, 5, -10) # Offset
+	cam_pos = tank.GetTransform().GetPosition()
+	cam_pos += camera_distance
+	cam_dt = (cam_pos - camera.GetTransform().GetPosition()) * hg.time_to_sec_f(dt)
+	camera.GetTransform().SetPosition(camera.GetTransform().GetPosition() + cam_dt)
+
+	# camera rotation
+	quat = hg.Quaternion.LookAt(tank.GetTransform().GetPosition() - camera.GetTransform().GetPosition())
+	camera.GetTransform().SetRotation(quat.ToEuler())
 
 
 def render_aim_cursor(plus, scn, angle):
@@ -197,7 +210,7 @@ def game():
 	hg.MountFileDriver(hg.StdFileDriver())
 	keyboard = hg.GetInputSystem().GetDevice("keyboard")
 
-	scn, ground = setup_game_level(plus)
+	scn, ground, camera = setup_game_level(plus)
 	tank, cannon, tank_mass = setup_tank(plus, scn)
 
 	game_state = "GAME_INIT"
@@ -226,6 +239,7 @@ def game():
 				game_state = "GAME"
 		# Game
 		elif game_state == "GAME":
+			update_game_camera(plus, scn, camera, tank[0], dt)
 			# tank
 			if plus.KeyDown(hg.KeyRight):
 				tank_torque -= hg.time_to_sec_f(dt) * max_torque_speed
