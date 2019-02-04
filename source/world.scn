@@ -46,56 +46,6 @@
 				}
 			},
 			"Node": {
-				"Uid": 2,
-				"DoNotInstantiate": true,
-				"Name": "ground",
-				"Components": {
-					"Transform": {},
-					"LogicScript": {
-						"Script": {
-							"Parameters": {
-								"Parameter": {
-									"Name": "width",
-									"Type": "Float",
-									"Value": 100.0
-								},
-								"Parameter": {
-									"Name": "length",
-									"Type": "Float",
-									"Value": 100.0
-								},
-								"Parameter": {
-									"Name": "subdiv_x",
-									"Type": "Int",
-									"Value": 1
-								},
-								"Parameter": {
-									"Name": "subdiv_z",
-									"Type": "Int",
-									"Value": 1
-								},
-								"Parameter": {
-									"Name": "material",
-									"Type": "std::shared_ptr<RenderMaterial>",
-									"Value": "@core/materials/default.mat"
-								}
-							},
-							"Path": "@core/lua/plane.lua"
-						}
-					},
-					"RigidBody": {
-						"Restitution": 0.5
-					},
-					"BoxCollision": {
-						"Dimensions": {
-							"x": 100.0,
-							"y": 0.25,
-							"z": 100.0
-						}
-					}
-				}
-			},
-			"Node": {
 				"Uid": 3,
 				"Name": "Light",
 				"Components": {

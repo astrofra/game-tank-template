@@ -5,7 +5,6 @@ from random import uniform, randint
 from constants import *
 
 hg.LoadPlugins()
-vel_history = [0] * 10
 
 def rvect(r):
 	return hg.Vector3(uniform(-r, r), uniform(-r, r), uniform(-r, r))
@@ -18,7 +17,7 @@ def setup_game_level(plus=None):
 	while not scn.IsReady():
 		plus.UpdateScene(scn, plus.UpdateClock())
 
-	scn.GetPhysicSystem().SetDebugVisuals(False)
+	scn.GetPhysicSystem().SetDebugVisuals(True)
 
 	# Get the game camera
 	cam = scn.GetNode("game_camera")
@@ -26,10 +25,9 @@ def setup_game_level(plus=None):
 
 	# Get the play ground
 	# scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(hg.AxisLockX + hg.AxisLockY + hg.AxisLockZ)
-	ground = plus.AddPhysicPlane(scn, hg.Matrix4.TranslationMatrix(hg.Vector3(0,0,0)) , 100, 100, 0.0)
-	ground[1].SetType(hg.RigidBodyKinematic)
-	# ground[1].SetStaticFriction(0.0)
-	# ground[1].SetDynamicFriction(0.0)
+	ground = plus.AddPhysicPlane(scn, hg.Matrix4.TranslationMatrix(hg.Vector3(0,0,0)) , 100, 100, 0.0, "assets/materials/ground.mat")
+	ground[1].SetStaticFriction(0.0)
+	ground[1].SetDynamicFriction(0.0)
 
 	return scn, ground
 
@@ -68,6 +66,7 @@ def setup_tank(plus=None, scn=None, pos=hg.Vector3(0, 0.75, 0), rot=hg.Vector3()
 
 	return root, cannon, mass
 
+
 def apply_tank_forces(tank, angle, thrust, mass):
 	global vel_history
 	tank[1].SetIsSleeping(False)
@@ -75,17 +74,12 @@ def apply_tank_forces(tank, angle, thrust, mass):
 
 	# the tank rotation is controlled by applying a torque on the body
 	# the strength of the torque is limited by the inverse angular velocity
-	# to measure the angular velocity with enough precision
-	# we build an history of 10 values and get the median value
-	vel_history.append(tank[1].GetAngularVelocity().y)
-	vel_history = vel_history[1:]
-	vel_sorted = vel_history.copy()
-	vel_sorted.sort()
-	vel = vel_sorted[5]
+	vel = tank[1].GetAngularVelocity().y
 	limit_amplitude = 5.0
 	torque_limiter = (limit_amplitude - min(abs(vel), limit_amplitude)) / limit_amplitude
 	torque_limiter = pow(torque_limiter, 2.0)
-	# torque_limiter = min(1.0, max(0.0, torque_limiter - 0.05))
+	torque_limiter = min(1.0, max(0.0, torque_limiter - 0.05))
+	# torque_limiter = 1.0
 	tank[1].ApplyTorque(hg.Vector3(0, 0, angle * mass * limit_amplitude * torque_limiter))
 
 	# thrust
