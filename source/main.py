@@ -79,11 +79,10 @@ def apply_tank_forces(tank, angle, thrust, mass):
 	torque_limiter = (limit_amplitude - min(abs(vel), limit_amplitude)) / limit_amplitude
 	torque_limiter = pow(torque_limiter, 2.0)
 	torque_limiter = min(1.0, max(0.0, torque_limiter - 0.05))
-	# torque_limiter = 1.0
-	tank[1].ApplyTorque(hg.Vector3(0, 0, angle * mass * limit_amplitude * torque_limiter))
+	tank[1].ApplyTorque(hg.Vector3(0, -angle * mass * limit_amplitude * torque_limiter, 0))
 
 	# thrust
-	thrust_vector = tank[0].GetTransform().GetWorld().GetRow(1)
+	thrust_vector = tank[0].GetTransform().GetWorld().GetRow(2)
 	thrust_vector *= thrust
 	limit_amplitude = 5.0
 	thrust_limiter = (limit_amplitude - min(abs(tank[1].GetLinearVelocity().Len()), limit_amplitude)) / limit_amplitude
