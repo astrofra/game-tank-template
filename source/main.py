@@ -97,6 +97,8 @@ def spawn_enemy(plus, scn, pos = hg.Vector3(0, 2, 5)):
 	scn.GetPhysicSystem().SetForceRigidBodyAxisLockOnCreation(0)
 	root = plus.AddPhysicSphere(scn, hg.Matrix4.TranslationMatrix(pos), 0.7, 6, 16, enemy_mass, "assets/materials/orange.mat")
 	root[0].SetName('enemy')
+	_geo = plus.LoadGeometry("assets/boulder/boulder.geo")
+	root[0].GetObject().SetGeometry(_geo)
 
 	return root
 

@@ -1,0 +1,48 @@
+{
+	"Scene": {
+		"Components": {
+			"Environment": {
+				"AmbientColor": {
+					"b": 1.0,
+					"g": 1.0,
+					"r": 1.0
+				},
+				"AmbientIntensity": 0.25,
+				"FogColor": {
+					"b": 1.0,
+					"g": 1.0,
+					"r": 1.0
+				}
+			}
+		},
+		"Nodes": {
+			"Node": {
+				"Uid": 1,
+				"Name": "boulder",
+				"Components": {
+					"Transform": {
+						"Rotation": {
+							"x": -0.0,
+							"y": 0.0,
+							"z": 0.0
+						}
+					},
+					"Object": {
+						"Geometry": "assets/boulder/boulder.geo"
+					}
+				}
+			}
+		},
+		"NodeHierarchy": {},
+		"Skeletons": {},
+		"State": {},
+		"Takes": {
+			"Take": {
+				"Name": "Take 001",
+				"Start": 0,
+				"End": 3333,
+				"Animations": {}
+			}
+		}
+	}
+}
