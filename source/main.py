@@ -99,7 +99,6 @@ def spawn_enemy(plus, scn, pos = hg.Vector3(0, 2, 5)):
 	root[0].SetName('enemy')
 	_geo = plus.LoadGeometry("assets/boulder/boulder.geo")
 	root[0].GetObject().SetGeometry(_geo)
-
 	return root
 
 
@@ -308,10 +307,13 @@ def game():
 
 			for enemy in enemy_list:
 				# make enemy crawl toward the player
-				enemy_dir = tank[0].GetTransform().GetPosition() - enemy[0].GetTransform().GetPosition()
+				enemy_pos = enemy[0].GetTransform().GetPosition()
+				enemy_dir = tank[0].GetTransform().GetPosition() - enemy_pos
 				enemy_dir.Normalize()
 				enemy[1].SetIsSleeping(False)
 				enemy[1].ApplyLinearForce(enemy_dir * 0.25 * enemy_mass)
+				enemy[1].ApplyForce(enemy_dir * 0.01 * enemy_mass, hg.Vector3(0,1,0))
+				enemy[1].ApplyForce(enemy_dir * -0.01 * enemy_mass, hg.Vector3(0,-1,0))
 
 				col_pairs = scn.GetPhysicSystem().GetCollisionPairs(enemy[0])
 				for col_pair in col_pairs:
