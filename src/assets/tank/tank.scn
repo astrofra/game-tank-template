@@ -1,0 +1,313 @@
+{
+	"canvas": {
+		"clear_color": true,
+		"clear_z": true,
+		"color": [
+			43,
+			43,
+			43,
+			255
+		]
+	},
+	"environment": {
+		"ambient": [
+			0,
+			0,
+			0,
+			255
+		],
+		"brdf_map": "core/pbr/brdf.dds",
+		"current_camera": null,
+		"fog_color": [
+			255,
+			255,
+			255,
+			255
+		],
+		"fog_far": 0.0,
+		"fog_near": 0.0,
+		"irradiance_map": "core/pbr/irradiance.dds",
+		"radiance_map": "core/pbr/radiance.dds"
+	},
+	"nodes": [
+		{
+			"components": [
+				0,
+				4294967295,
+				0,
+				4294967295,
+				4294967295
+			],
+			"idx": 0,
+			"name": "tank"
+		},
+		{
+			"components": [
+				1,
+				4294967295,
+				4294967295,
+				4294967295,
+				4294967295
+			],
+			"idx": 1,
+			"name": "emiter_cannon"
+		},
+		{
+			"components": [
+				2,
+				4294967295,
+				4294967295,
+				4294967295,
+				4294967295
+			],
+			"idx": 2,
+			"name": "emiter_cannon_small"
+		},
+		{
+			"components": [
+				3,
+				4294967295,
+				4294967295,
+				4294967295,
+				4294967295
+			],
+			"idx": 3,
+			"name": "emiter_smoke"
+		},
+		{
+			"components": [
+				4,
+				4294967295,
+				4294967295,
+				4294967295,
+				4294967295
+			],
+			"idx": 4,
+			"name": "tank_colshape_0"
+		},
+		{
+			"components": [
+				5,
+				4294967295,
+				4294967295,
+				4294967295,
+				4294967295
+			],
+			"idx": 5,
+			"name": "tank_colshape_1"
+		}
+	],
+	"objects": [
+		{
+			"materials": [
+				{
+					"program": "core/shader/pbr.hps",
+					"textures": [
+						{
+							"name": "uBaseOpacityMap",
+							"stage": 0,
+							"texture": {
+								"flags": 0,
+								"name": "tank/tank_basecolor.png"
+							}
+						},
+						{
+							"name": "uOcclusionRoughnessMetalnessMap",
+							"stage": 1,
+							"texture": {
+								"flags": 0,
+								"name": "tank/tank_orm.png"
+							}
+						},
+						{
+							"name": "uNormalMap",
+							"stage": 2,
+							"texture": {
+								"flags": 0,
+								"name": "tank/tank_normal.png"
+							}
+						}
+					],
+					"values": [
+						{
+							"name": "uDiffuseColor",
+							"type": "vec4",
+							"value": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							]
+						},
+						{
+							"name": "uSpecularColor",
+							"type": "vec4",
+							"value": [
+								1.0,
+								1.0,
+								1.0,
+								0.12499997764825821
+							]
+						},
+						{
+							"name": "uSelfColor",
+							"type": "vec4",
+							"value": [
+								0.0,
+								0.0,
+								0.0,
+								-1.0
+							]
+						}
+					]
+				},
+				{
+					"program": "core/shader/default.hps",
+					"values": [
+						{
+							"name": "uDiffuseColor",
+							"type": "vec4",
+							"value": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							]
+						},
+						{
+							"name": "uSpecularColor",
+							"type": "vec4",
+							"value": [
+								0.0,
+								0.0,
+								0.0,
+								0.03124999813735485
+							]
+						},
+						{
+							"name": "uSelfColor",
+							"type": "vec4",
+							"value": [
+								0.0,
+								0.0,
+								0.0,
+								-1.0
+							]
+						}
+					]
+				}
+			],
+			"name": "tank/tank.geo"
+		}
+	],
+	"transforms": [
+		{
+			"parent": null,
+			"pos": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"rot": [
+				-7.0167078561561656e-15,
+				0.0,
+				0.0
+			],
+			"scl": [
+				1.0,
+				1.0,
+				1.0
+			]
+		},
+		{
+			"parent": 0,
+			"pos": [
+				-3.475051579826527e-09,
+				0.9443763494491577,
+				0.7015208601951599
+			],
+			"rot": [
+				-2.4998043954838067e-06,
+				90.00000762939453,
+				-3.500849485397339
+			],
+			"scl": [
+				1.0,
+				1.0,
+				1.0
+			]
+		},
+		{
+			"parent": 0,
+			"pos": [
+				-5.448452355949485e-09,
+				0.6880657076835632,
+				0.6563746929168701
+			],
+			"rot": [
+				-9.308071639679838e-06,
+				90.00000762939453,
+				-4.3261213302612305
+			],
+			"scl": [
+				1.0,
+				1.0,
+				1.0
+			]
+		},
+		{
+			"parent": 0,
+			"pos": [
+				-0.39346444606781006,
+				0.7816122174263,
+				-0.7785365581512451
+			],
+			"rot": [
+				-9.306301762990188e-06,
+				90.00000762939453,
+				4.467652797698975
+			],
+			"scl": [
+				1.0,
+				1.0,
+				1.0
+			]
+		},
+		{
+			"parent": 0,
+			"pos": [
+				-0.013788223266601563,
+				0.2140457034111023,
+				0.024087607860565186
+			],
+			"rot": [
+				2.453573021498983e-15,
+				0.0,
+				0.0
+			],
+			"scl": [
+				1.0,
+				0.48019275069236755,
+				1.5971906185150146
+			]
+		},
+		{
+			"parent": 0,
+			"pos": [
+				-0.013788225129246712,
+				0.7922084927558899,
+				-0.020494190976023674
+			],
+			"rot": [
+				8.595164129518158e-16,
+				0.0,
+				0.0
+			],
+			"scl": [
+				0.5067757964134216,
+				0.7550086379051208,
+				1.0
+			]
+		}
+	]
+}

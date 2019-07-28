@@ -1,0 +1,3 @@
+{
+	"features": ["OptionalDiffuseMap", "OptionalSpecularMap", "OptionalNormalMap", "OptionalLightMap", "OptionalSelfMap", "OptionalOpacityMap", "OptionalAmbientMap", "OptionalReflectionMap"]
+}
